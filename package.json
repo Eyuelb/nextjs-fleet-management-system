@@ -4,21 +4,30 @@
     "dev": "next dev --turbo",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "drizzle-generate": "npx drizzle-kit generate:pg",
+    "drizzle-push": "drizzle-kit push:pg"
   },
   "dependencies": {
+    "@tanstack/react-query": "^5.28.9",
     "@types/node": "^20.10.5",
     "@types/react": "^18.2.45",
     "@types/react-dom": "^18.2.18",
+    "axios": "^1.6.8",
     "bcrypt-ts": "^5.0.0",
+    "dayjs": "^1.11.10",
+    "drizzle-kit": "^0.20.14",
     "drizzle-orm": "^0.29.2",
     "geist": "^1.2.0",
+    "jose": "^5.2.3",
     "next": "^14.0.4",
     "next-auth": "^5.0.0-beta.3",
+    "next-connect": "1.0.0-next.4",
     "pg": "^8.11.3",
     "postgres": "^3.4.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hook-form": "^7.51.2",
     "zod": "^3.22.4"
   },
   "devDependencies": {

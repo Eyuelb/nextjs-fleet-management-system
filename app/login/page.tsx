@@ -1,9 +1,35 @@
-import Link from 'next/link';
-import { Form } from 'app/form';
-import { signIn } from '@/lib/auth';
-import { SubmitButton } from 'app/submit-button';
+"use client";
+import { useMutation } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+import { httpPost } from "@/lib/axios/services";
+interface LoginFormProps {
+  onLogin: () => void; // You can pass additional parameters for login if needed
+}
+
+interface LoginFormData {
+  email: string;
+  password: string;
+}
 
 export default function Login() {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<LoginFormData>();
+
+  const { mutate, isPending } = useMutation({
+    mutationFn: (data: LoginFormData) => httpPost("/auth/login", data),
+    onSuccess: () => {},
+    onError: (error) => {
+      console.error("Login failed:", error);
+      alert("Login failed. Please check your credentials.");
+    },
+  });
+
+  const onSubmit = (data: LoginFormData) => {
+    mutate(data);
+  };
   return (
     <div className="flex h-screen w-screen items-center justify-center bg-gray-50">
       <div className="z-10 w-full max-w-md overflow-hidden rounded-2xl border border-gray-100 shadow-xl">
@@ -13,25 +39,45 @@ export default function Login() {
             Use your email and password to sign in
           </p>
         </div>
-        <Form
-          action={async (formData: FormData) => {
-            'use server';
-            await signIn('credentials', {
-              redirectTo: '/protected',
-              email: formData.get('email') as string,
-              password: formData.get('password') as string,
-            });
-          }}
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex flex-col space-y-4 bg-gray-50 px-4 py-8 sm:px-16"
         >
-          <SubmitButton>Sign in</SubmitButton>
-          <p className="text-center text-sm text-gray-600">
-            {"Don't have an account? "}
-            <Link href="/register" className="font-semibold text-gray-800">
-              Sign up
-            </Link>
-            {' for free.'}
-          </p>
-        </Form>
+          <div>
+            <label
+              className="block text-xs text-gray-600 uppercase"
+              htmlFor="email"
+            >
+              Email:
+            </label>
+            <input
+              type="text"
+              id="email"
+              className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
+              {...register("email", { required: true })}
+            />
+            {errors.email && <span>This field is required</span>}
+          </div>
+          <div>
+            <label
+              className="block text-xs text-gray-600 uppercase"
+              htmlFor="password"
+            >
+              Password:
+            </label>
+            <input
+              type="password"
+              id="password"
+              className="mt-1 block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-black focus:outline-none focus:ring-black sm:text-sm"
+              {...register("password", { required: true })}
+            />
+            {errors.password && <span>This field is required</span>}
+          </div>
+          <button type="submit" disabled={isPending}>
+            Login
+          </button>
+          {isPending && <div>Loading...</div>}
+        </form>
       </div>
     </div>
   );

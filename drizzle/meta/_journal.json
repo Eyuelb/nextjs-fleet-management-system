@@ -1,0 +1,27 @@
+{
+  "version": "5",
+  "dialect": "pg",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "5",
+      "when": 1711928874917,
+      "tag": "0000_cheerful_miek",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "5",
+      "when": 1711932039328,
+      "tag": "0001_high_midnight",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1712007601145,
+      "tag": "0002_previous_moira_mactaggert",
+      "breakpoints": true
+    }
+  ]
+}
