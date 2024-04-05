@@ -27,7 +27,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={font.className}>
-      <body>
+      <body suppressHydrationWarning={true} lang="en">
         <MantineProvider>
           <ReactQueryProvider>{children}</ReactQueryProvider>
         </MantineProvider>
