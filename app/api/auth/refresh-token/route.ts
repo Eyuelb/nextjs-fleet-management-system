@@ -60,6 +60,6 @@ router.get(async (req) => {
 // Export handlers
 export const { GET } = {
   GET: async function (request: RequestType, ctx: RequestContext) {
-    return router.run(request, ctx);
+    return router.run(request, ctx) as Promise<Response>
   },
 };

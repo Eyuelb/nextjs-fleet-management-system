@@ -1,3 +1,4 @@
+import { Table } from "@mantine/core";
 import React from "react";
 
 interface TableProps {
@@ -13,38 +14,40 @@ const TableComponent: React.FC<TableProps> = ({ data, onDelete }) => {
   const columns = Object.keys(data[0]);
 
   return (
-    <table className="border border-gray-300 p-4">
-      <thead className="bg-gray-50">
-        <tr>
-          {columns.map((column) => (
-            <th
-              key={column}
-              className="border px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
-            >
-              {column}
-            </th>
-          ))}
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody className="bg-white  border divide-gray-200">
-        {data.map((row, index) => (
-          <tr key={index} className=" divide-gray-200">
+    <Table.ScrollContainer minWidth={500}>
+      <Table withColumnBorders withTableBorder className="">
+        <Table.Thead className="">
+          <Table.Tr>
             {columns.map((column) => (
-              <td
+              <Table.Th
                 key={column}
-                className="border max-w-[150px] text-xs overflow-hidden text-ellipsis text-nowrap p-2 whitespace-nowrap border-b border-gray-200"
+                className="border px-6 py-3 text-left text-xs font-medium  uppercase tracking-wider"
               >
-                <span className="">{row[column]}</span>
-              </td>
+                {column}
+              </Table.Th>
             ))}
-            <td>
-              <button onClick={() => onDelete(row["id"])}>Delete</button>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
+            <Table.Th>Action</Table.Th>
+          </Table.Tr>
+        </Table.Thead>
+        <Table.Tbody className=" border ">
+          {data.map((row, index) => (
+            <Table.Tr key={index} className=" ">
+              {columns.map((column) => (
+                <Table.Td
+                  key={column}
+                  className="border max-w-[150px] text-xs overflow-hidden text-ellipsis text-nowrap p-2 whitespace-nowrap border-b "
+                >
+                  <span className="">{row[column]}</span>
+                </Table.Td>
+              ))}
+              <Table.Td>
+                <button onClick={() => onDelete(row["id"])}>Delete</button>
+              </Table.Td>
+            </Table.Tr>
+          ))}
+        </Table.Tbody>
+      </Table>
+    </Table.ScrollContainer>
   );
 };
 

@@ -62,9 +62,9 @@ router.post(async (req) => {
 // Export handlers
 export const { GET, POST } = {
   GET: async function (request: RequestType, ctx: RequestContext) {
-    return router.run(request, ctx);
+    return await router.run(request, ctx);
   },
   POST: async function (request: RequestType, ctx: RequestContext) {
-    return router.run(request, ctx);
+    return await router.run(request, ctx);
   },
 };

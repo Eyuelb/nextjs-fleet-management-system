@@ -80,12 +80,12 @@ router.delete(async (req) => {
 // Export handlers
 export const { GET, PUT, DELETE } = {
   GET: async function (request: RequestType, ctx: RequestContext) {
-    return router.run(request, ctx);
+    return router.run(request, ctx) as Promise<Response>
   },
   PUT: async function (request: RequestType, ctx: RequestContext) {
-    return router.run(request, ctx);
+    return router.run(request, ctx) as Promise<Response>
   },
   DELETE: async function (request: RequestType, ctx: RequestContext) {
-    return router.run(request, ctx);
+    return router.run(request, ctx) as Promise<Response>
   },
 };

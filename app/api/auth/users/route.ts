@@ -54,9 +54,9 @@ router.post(async (req) => {
 // Export handlers
 export const { GET, POST } = {
   GET: async function (request: RequestType, ctx: RequestContext) {
-    return router.run(request, ctx);
+    return router.run(request, ctx) as Promise<Response>
   },
   POST: async function (request: RequestType, ctx: RequestContext) {
-    return router.run(request, ctx);
+    return router.run(request, ctx) as Promise<Response>
   },
 };

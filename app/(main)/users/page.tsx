@@ -48,7 +48,7 @@ const PageComponent: React.FC = () => {
     },
   });
   return (
-    <div className="p-5">
+    <div className="w-full">
       {isPending && <div>Loading...</div>}
 
       <FormGenerator
