@@ -1,8 +1,8 @@
 import tokenService from "@/lib/token";
 import { genSaltSync, hashSync } from "bcrypt-ts";
-import { randomUUID } from "crypto";
+import { error } from "console";
 import { connectToDatabase } from "db/pool";
-import { user } from "db/schema";
+import { users } from "db/schema";
 import { createEdgeRouter } from "next-connect";
 import { NextRequest, NextResponse } from "next/server";
 import { logRequest } from "utils/api/log";
@@ -17,7 +17,6 @@ interface RequestType extends NextRequest {
   state: {};
 }
 
-
 // Create a router
 const router = createEdgeRouter<RequestType, RequestContext>();
 
@@ -26,7 +25,7 @@ router.use(tokenService.validateRequestMiddleware);
 
 router.get(async (req) => {
   const db = await connectToDatabase();
-  const result = await db.select().from(user);
+  const result = await db.select().from(users);
 
   return NextResponse.json(result);
 });
@@ -35,19 +34,20 @@ router.post(async (req) => {
   const body = await req.json();
   const salt = genSaltSync(10);
   const password = hashSync("123456", salt);
+  console.log(body)
   const newUser = {
-    id: randomUUID(),
     ...body,
     password,
   };
   try {
     const db = await connectToDatabase();
 
-    await db.insert(user).values(newUser);
+    const result = await db.insert(users).values(newUser);
+    return NextResponse.json(result);
   } catch (error) {}
 
-  return NextResponse.json({
-    message: "User has been created",
+  return NextResponse.json(error, {
+    status: 500,
   });
 });
 

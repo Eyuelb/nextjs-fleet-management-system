@@ -2,6 +2,7 @@ import tokenService from "@/lib/token";
 import { createEdgeRouter } from "next-connect";
 import { NextRequest, NextResponse } from "next/server";
 import { logRequest } from "utils/api/log";
+import { ErrorResponse } from "utils/api/response";
 
 interface RequestContext {
   params: {
@@ -23,42 +24,29 @@ router.use(logRequest);
 router.get(async (req) => {
   try {
     const refresh_token = await tokenService.getToken(req, "refresh");
-    if (refresh_token) {
-      const refresh_token_isValid = await tokenService.isValid(refresh_token);
-      console.log();
-      if (refresh_token_isValid) {
-        const res = NextResponse.json({
-          message: "Token Refreshed Successfully",
-        });
-        const userData = await tokenService.decode(refresh_token);
-        const access_token = await tokenService.createJWT(userData, "access");
-
-        res.cookies.set("access_token", access_token, {
-          path: "/",
-        });
-        res.cookies.set("refresh_token", refresh_token, {
-          path: "/",
-        });
-        return res;
-      }
-      const res = NextResponse.json(
-        {
-          message: "Your Session Has Expired Please Login To continue",
-        },
-        {
-          status: 401,
-        }
-      );
-      return res;
+    if (!refresh_token) {
+      return ErrorResponse(401, "Invalid Request Refresh Token is required");
     }
-    const res = NextResponse.json(
-      {
-        message: "Invalid Session",
-      },
-      {
-        status: 401,
-      }
-    );
+    const refresh_token_isValid = await tokenService.isValid(refresh_token);
+    if (!refresh_token_isValid) {
+      return ErrorResponse(
+        401,
+        "Your Session Has Expired Please Login To continue"
+      );
+    }
+    const res = NextResponse.json({
+      message: "Token Refreshed Successfully",
+    });
+
+    const userData = await tokenService.decode(refresh_token);
+    const access_token = await tokenService.createJWT(userData, "access");
+
+    res.cookies.set("access_token", access_token, {
+      path: "/",
+    });
+    res.cookies.set("refresh_token", refresh_token, {
+      path: "/",
+    });
     return res;
   } catch (error) {
     console.log(error);

@@ -1,8 +1,10 @@
 import { SignJWT, jwtVerify } from "jose";
 import { NextRequest, NextResponse } from "next/server";
+import { httpGet } from "../axios/services";
+import { ErrorResponse } from "utils/api/response";
 export const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY ?? "";
 export const JWT_EXPIRES_IN = (60 * 60) as number;
-export const JWT_REFRESH_EXPIRATION = (1320 * 60) as number;
+export const JWT_REFRESH_EXPIRATION = (180 * 60) as number;
 
 type TokenType = "access" | "refresh";
 
@@ -74,27 +76,25 @@ const tokenService = {
     const cookies_access_token = req.cookies.get("access_token");
     const cookies_refresh_token = req.cookies.get("refresh_token");
 
-    if (cookies_access_token && cookies_refresh_token) {
-      const access_token_isValid = await tokenService.isValid(
-        cookies_access_token.value
-      );
-      const refresh_token_isValid = await tokenService.isValid(
-        cookies_refresh_token.value
-      );
-      if (access_token_isValid && refresh_token_isValid) {
-        return next();
-      }
-      const res = NextResponse.json(
-        { message: "Authorization is Expired" },
-        { status: 401 }
-      );
-      return res;
+    if (!cookies_access_token) {
+      return ErrorResponse(401, "Invalid Request Access Token is required");
     }
-    const res = NextResponse.json(
-      { message: "Token is not provided" },
-      { status: 401 }
+    if (!cookies_refresh_token) {
+      return ErrorResponse(401, "Invalid Request Refresh Token is required");
+    }
+    const access_token_isValid = await tokenService.isValid(
+      cookies_access_token.value
     );
-    return res;
+    if (!access_token_isValid) {
+      return ErrorResponse(403, "Access Token Is Expired");
+    }
+    const refresh_token_isValid = await tokenService.isValid(
+      cookies_refresh_token.value
+    );
+    if (!refresh_token_isValid) {
+      return ErrorResponse(401, "Refresh Token Is Expired");
+    }
+    return next();
   },
   getToken: async (req: NextRequest, type: TokenType) => {
     if (type === "access") {
@@ -111,6 +111,14 @@ const tokenService = {
     }
 
     return null;
+  },
+  refreshTokenRequest: async () => {
+    try {
+      const res = await httpGet<{ data: FormData }>("/auth/refresh-token");
+      return res;
+    } catch (error) {
+      throw error;
+    }
   },
 };
 

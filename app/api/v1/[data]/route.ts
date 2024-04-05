@@ -1,17 +1,13 @@
-import { randomUUID } from "crypto";
 import queryBuilder from "db/query";
 import { createEdgeRouter } from "next-connect";
 import { NextRequest, NextResponse } from "next/server";
 import { logRequest } from "utils/api/log";
+import { AppConfig } from "utils/app-config";
 
-enum AppConfig {
-  user = "user",
-  products = "products",
-  // Add more endpoints and their corresponding table names as needed
-}
+
 interface RequestContext {
   params: {
-    data?: string[];
+    data?: string;
   };
 }
 
@@ -27,7 +23,7 @@ async function validateTable(
   ctx: RequestContext,
   next: () => void
 ) {
-  const tableName = ctx.params.data?.[0];
+  const tableName = ctx.params.data;
 
   if (!tableName || !(tableName in AppConfig)) {
     return NextResponse.json(
@@ -53,34 +49,22 @@ router.use(validateTable);
 // Define GET handler
 router.get(async (req) => {
   const data = await queryBuilder.read(req.state?.tableName);
-  return NextResponse.json({ data });
+  return NextResponse.json(data);
 });
 router.post(async (req) => {
   const body = await req.json();
-  const newUser = {
-    id: randomUUID(),
-    ...body,
-  };
 
-  const result = await queryBuilder.create(req.state?.tableName, newUser);
+  const result = await queryBuilder.create(req.state?.tableName, body);
 
-  const res = NextResponse.json({
-    message: "User has been created",
-  });
+  const res = NextResponse.json(result);
   return res;
 });
 // Export handlers
-export const { GET, POST, PUT, DELETE } = {
+export const { GET, POST } = {
   GET: async function (request: RequestType, ctx: RequestContext) {
     return router.run(request, ctx);
   },
   POST: async function (request: RequestType, ctx: RequestContext) {
-    return router.run(request, ctx);
-  },
-  PUT: async function (request: RequestType, ctx: RequestContext) {
-    return router.run(request, ctx);
-  },
-  DELETE: async function (request: RequestType, ctx: RequestContext) {
     return router.run(request, ctx);
   },
 };

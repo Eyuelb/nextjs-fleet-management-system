@@ -1,13 +1,9 @@
 import { drizzle } from "drizzle-orm/node-postgres";
 import { Client } from "pg";
-import { user } from "./schema";
 import { Table } from "drizzle-orm";
 import * as schema from "./schema";
 // Define a map to store table objects
-const tablesMap: { [key: string]: Table<any> } = {
-  user,
-  // Add more tables as needed...
-};
+const tablesMap: { [key: string]: Table<any> } = schema;
 
 // Function to retrieve table object by table name
 export function getTable(tableName: string): Table<any> {

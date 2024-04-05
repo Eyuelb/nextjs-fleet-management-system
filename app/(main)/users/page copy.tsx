@@ -1,25 +1,19 @@
 "use client";
 import { httpDelete, httpGet, httpPost, httpPut } from "@/lib/axios/services";
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { genSaltSync, hashSync } from "bcrypt-ts";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import UserTable from "./_components/table";
-import { User } from "@/lib/auth/model";
 import { user } from "db/schema";
-
-interface FormData {
-  name: string;
-  email: string;
-  password: string;
-}
+import SelectRole from "./_components/select-role";
+type User = typeof user.$inferSelect;
 
 const UserCreationForm: React.FC = () => {
   const [users, setUsers] = useState<any>([]);
 
   const { data, refetch, isLoading } = useQuery({
     queryKey: ["users"],
-    queryFn: () => httpGet<{ data: FormData }>("/auth/users"),
+    queryFn: () => httpGet<User>("/auth/users"),
   });
   useEffect(() => {
     if (data) {
@@ -33,10 +27,10 @@ const UserCreationForm: React.FC = () => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm<FormData>();
+  } = useForm<User>();
 
   const { mutate, isPending } = useMutation({
-    mutationFn: (data: FormData) => httpPost(`/auth/users`, data),
+    mutationFn: (data: User) => httpPost(`/auth/users`, data),
     onSuccess: () => {
       reset(); // Clear form fields after successful creation
       refetch();
@@ -87,8 +81,7 @@ const UserCreationForm: React.FC = () => {
   const handleDeleteUser = (id: string) => {
     deleteUser(id);
   };
-  const onSubmit = (data: FormData) => {
-
+  const onSubmit = (data: User) => {
     mutate(data);
   };
 
@@ -112,6 +105,13 @@ const UserCreationForm: React.FC = () => {
             type="email"
             id="email"
             {...register("email", { required: true })}
+          />
+          <SelectRole
+            onChange={(id) =>
+              register("roleID", {
+                value: id,
+              })
+            }
           />
           {errors.email && <span>This field is required</span>}
         </div>

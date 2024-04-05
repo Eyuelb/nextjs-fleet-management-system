@@ -1,6 +1,6 @@
 {
-  "id": "49fb4781-c5af-4d15-8c36-ff990fe33785",
-  "prevId": "00000000-0000-0000-0000-000000000000",
+  "id": "3dcc9fae-aa71-464f-a068-829a8a75001b",
+  "prevId": "2d66161d-2187-4caa-8d05-78cf182787c8",
   "version": "5",
   "dialect": "pg",
   "tables": {
@@ -11,8 +11,8 @@
         "fleetID": {
           "name": "fleetID",
           "type": "uuid",
-          "primaryKey": false,
-          "notNull": false,
+          "primaryKey": true,
+          "notNull": true,
           "default": "gen_random_uuid()"
         },
         "vehicleID": {
@@ -42,41 +42,41 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "fleet_vehicleID_vehicles_id_fk": {
-          "name": "fleet_vehicleID_vehicles_id_fk",
+        "fleet_vehicleID_vehicles_vehicleID_fk": {
+          "name": "fleet_vehicleID_vehicles_vehicleID_fk",
           "tableFrom": "fleet",
           "tableTo": "vehicles",
           "columnsFrom": [
             "vehicleID"
           ],
           "columnsTo": [
-            "id"
+            "vehicleID"
           ],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "fleet_userID_user_id_fk": {
-          "name": "fleet_userID_user_id_fk",
+        "fleet_userID_users_userID_fk": {
+          "name": "fleet_userID_users_userID_fk",
           "tableFrom": "fleet",
-          "tableTo": "user",
+          "tableTo": "users",
           "columnsFrom": [
             "userID"
           ],
           "columnsTo": [
-            "id"
+            "userID"
           ],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "fleet_routeID_routes_id_fk": {
-          "name": "fleet_routeID_routes_id_fk",
+        "fleet_routeID_routes_routeID_fk": {
+          "name": "fleet_routeID_routes_routeID_fk",
           "tableFrom": "fleet",
           "tableTo": "routes",
           "columnsFrom": [
             "routeID"
           ],
           "columnsTo": [
-            "id"
+            "routeID"
           ],
           "onDelete": "no action",
           "onUpdate": "no action"
@@ -89,11 +89,11 @@
       "name": "maintenance",
       "schema": "",
       "columns": {
-        "id": {
-          "name": "id",
+        "requestID": {
+          "name": "requestID",
           "type": "uuid",
-          "primaryKey": false,
-          "notNull": false,
+          "primaryKey": true,
+          "notNull": true,
           "default": "gen_random_uuid()"
         },
         "vehicleID": {
@@ -135,28 +135,28 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "maintenance_vehicleID_vehicles_id_fk": {
-          "name": "maintenance_vehicleID_vehicles_id_fk",
+        "maintenance_vehicleID_vehicles_vehicleID_fk": {
+          "name": "maintenance_vehicleID_vehicles_vehicleID_fk",
           "tableFrom": "maintenance",
           "tableTo": "vehicles",
           "columnsFrom": [
             "vehicleID"
           ],
           "columnsTo": [
-            "id"
+            "vehicleID"
           ],
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "maintenance_requestedByUserID_user_id_fk": {
-          "name": "maintenance_requestedByUserID_user_id_fk",
+        "maintenance_requestedByUserID_users_userID_fk": {
+          "name": "maintenance_requestedByUserID_users_userID_fk",
           "tableFrom": "maintenance",
-          "tableTo": "user",
+          "tableTo": "users",
           "columnsFrom": [
             "requestedByUserID"
           ],
           "columnsTo": [
-            "id"
+            "userID"
           ],
           "onDelete": "no action",
           "onUpdate": "no action"
@@ -169,11 +169,11 @@
       "name": "roles",
       "schema": "",
       "columns": {
-        "id": {
-          "name": "id",
+        "roleID": {
+          "name": "roleID",
           "type": "uuid",
-          "primaryKey": false,
-          "notNull": false,
+          "primaryKey": true,
+          "notNull": true,
           "default": "gen_random_uuid()"
         },
         "roleName": {
@@ -192,11 +192,11 @@
       "name": "routes",
       "schema": "",
       "columns": {
-        "id": {
-          "name": "id",
+        "routeID": {
+          "name": "routeID",
           "type": "uuid",
-          "primaryKey": false,
-          "notNull": false,
+          "primaryKey": true,
+          "notNull": true,
           "default": "gen_random_uuid()"
         },
         "startLocation": {
@@ -223,15 +223,15 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "user": {
-      "name": "user",
+    "users": {
+      "name": "users",
       "schema": "",
       "columns": {
-        "id": {
-          "name": "id",
+        "userID": {
+          "name": "userID",
           "type": "uuid",
-          "primaryKey": false,
-          "notNull": false,
+          "primaryKey": true,
+          "notNull": true,
           "default": "gen_random_uuid()"
         },
         "name": {
@@ -285,15 +285,15 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "user_roleID_roles_id_fk": {
-          "name": "user_roleID_roles_id_fk",
-          "tableFrom": "user",
+        "users_roleID_roles_roleID_fk": {
+          "name": "users_roleID_roles_roleID_fk",
+          "tableFrom": "users",
           "tableTo": "roles",
           "columnsFrom": [
             "roleID"
           ],
           "columnsTo": [
-            "id"
+            "roleID"
           ],
           "onDelete": "no action",
           "onUpdate": "no action"
@@ -301,8 +301,8 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "user_email_unique": {
-          "name": "user_email_unique",
+        "users_email_unique": {
+          "name": "users_email_unique",
           "nullsNotDistinct": false,
           "columns": [
             "email"
@@ -314,11 +314,11 @@
       "name": "vehicles",
       "schema": "",
       "columns": {
-        "id": {
-          "name": "id",
+        "vehicleID": {
+          "name": "vehicleID",
           "type": "uuid",
-          "primaryKey": false,
-          "notNull": false,
+          "primaryKey": true,
+          "notNull": true,
           "default": "gen_random_uuid()"
         },
         "type": {

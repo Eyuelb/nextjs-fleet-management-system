@@ -18,7 +18,6 @@ const UserTable: React.FC<UserTableProps> = ({ users, onUpdateUser, onDeleteUser
   const handleDelete = (id: string) => {
     onDeleteUser(id);
   };
-console.log(users)
   return (
     <div>
       <h2>User Table</h2>

@@ -13,6 +13,7 @@ const createEvent = (
 ): Record<string, CallbackFunction> => {
   const event: Record<string, CallbackFunction> = {};
   event[id] = callback;
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   useExternalEvents(event); // Use useExternalEvents to register the event
   return event;
 };

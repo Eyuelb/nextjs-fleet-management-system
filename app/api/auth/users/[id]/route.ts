@@ -1,5 +1,5 @@
 import { connectToDatabase } from "db/pool";
-import { user } from "db/schema";
+import { users } from "db/schema";
 import { eq } from "drizzle-orm";
 import { createEdgeRouter } from "next-connect";
 import { NextRequest, NextResponse } from "next/server";
@@ -13,7 +13,7 @@ interface RequestContext {
 
 interface RequestType extends NextRequest {
   state: {
-    userId: string;
+    usersId: string;
   };
 }
 
@@ -22,8 +22,8 @@ async function validateId(
   ctx: RequestContext,
   next: () => void
 ) {
-  const userId = ctx.params.id;
-  if (!userId) {
+  const usersId = ctx.params.id;
+  if (!usersId) {
     return NextResponse.json(
       { message: "Invalid id!" },
       {
@@ -32,7 +32,7 @@ async function validateId(
     );
   }
   req.state = {
-    userId,
+    usersId,
   };
 
   return next();
@@ -45,19 +45,19 @@ router.use(validateId);
 
 // Define GET handler
 router.get(async (req) => {
-  const userId = req.state.userId;
+  const usersId = req.state.usersId;
   const db = await connectToDatabase();
-  const data = await db.select().from(user).where(eq(user.id, userId));
+  const data = await db.select().from(users).where(eq(users.id, usersId));
   return NextResponse.json(data);
 });
 
 // Define PUT handler
 router.put(async (req) => {
-  const userId = req.state.userId;
+  const usersId = req.state.usersId;
   const body = await req.json();
 
   const db = await connectToDatabase();
-  await db.update(user).set(body).where(eq(user.id, userId));
+  await db.update(users).set(body).where(eq(users.id, usersId));
 
   return NextResponse.json({
     message: "User has been updated",
@@ -66,11 +66,11 @@ router.put(async (req) => {
 
 // Define DELETE handler
 router.delete(async (req) => {
-  const userId = req.state.userId;
-  console.log(userId);
+  const usersId = req.state.usersId;
+  console.log(usersId);
 
   const db = await connectToDatabase();
-  await db.delete(user).where(eq(user.id, userId));
+  await db.delete(users).where(eq(users.id, usersId));
 
   return NextResponse.json({
     message: "User has been deleted",

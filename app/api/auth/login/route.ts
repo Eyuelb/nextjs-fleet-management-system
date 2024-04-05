@@ -1,7 +1,7 @@
 import tokenService from "@/lib/token";
 import { compare } from "bcrypt-ts";
 import { connectToDatabase } from "db/pool";
-import { user } from "db/schema";
+import { users } from "db/schema";
 import { eq } from "drizzle-orm";
 import { createEdgeRouter } from "next-connect";
 import { NextRequest, NextResponse } from "next/server";
@@ -22,21 +22,21 @@ interface RequestType extends NextRequest {
 async function authenticateUser(email: string, password: string) {
   try {
     const db = await connectToDatabase();
-    const result = await db.select().from(user).where(eq(user.email, email));
+    const result = await db.select().from(users).where(eq(users.email, email));
     if (result.length === 0) {
       throw new Error("Authentication Failed");
     }
 
     const passwordsMatch = await compare(password, result[0].password!);
-    const userData = {
-      userId: result[0].id,
+    const usersData = {
+      usersId: result[0].id,
     };
     if (passwordsMatch) {
       // Generate access token using the refresh token
-      const access_token = await tokenService.createJWT(userData, "access");
-      const refresh_token = await tokenService.createJWT(userData, "refresh");
+      const access_token = await tokenService.createJWT(usersData, "access");
+      const refresh_token = await tokenService.createJWT(usersData, "refresh");
 
-      // Return user data along with tokens
+      // Return users data along with tokens
       const authenticatedUser = {
         access_token,
         refresh_token,
