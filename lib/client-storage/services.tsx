@@ -1,5 +1,5 @@
 import dayjs from "dayjs";
-
+import {setCookie,getCookie} from 'cookies-next'
 export enum StorageType {
     LocalStorage,
     Cookies
@@ -22,7 +22,7 @@ export const storageService = {
             const storedData = localStorage.getItem(key);
             return storedData !== null ? JSON.parse(storedData) : null;
         } else if (storageType === StorageType.Cookies) {
-            const storedData = getCookie(key);
+            const storedData = getCookie(key) as any;
             return storedData !== '' ? JSON.parse(storedData) : null;
         } else {
             return null;
@@ -46,7 +46,7 @@ export const storageService = {
         if (storageType === StorageType.LocalStorage) {
             localStorage.removeItem(key);
         } else if (storageType === StorageType.Cookies) {
-            setCookie(key, '', -1); // Setting expiration date in the past to remove the cookie
+            setCookie(key, ''); // Setting expiration date in the past to remove the cookie
         }
     },
     startExpirationListener: (interval: number = 48000 /* 1 minute */) => {
@@ -63,24 +63,4 @@ export const storageService = {
     }
 };
 
-function setCookie(name: string, value: string, days: number = 1) {
-    const expirationDate = new Date();
-    expirationDate.setTime(expirationDate.getTime() + (days * 24 * 60 * 60 * 1000));
-    const expires = `expires=${expirationDate.toUTCString()}`;
-    document.cookie = `${name}=${value}; ${expires}; path=/`;
-}
 
-function getCookie(name: string) {
-    const cookieName = `${name}=`;
-    const decodedCookie = decodeURIComponent(document.cookie);
-    const cookieArray = decodedCookie.split(';');
-    for (let cookie of cookieArray) {
-        while (cookie.charAt(0) === ' ') {
-            cookie = cookie.substring(1);
-        }
-        if (cookie.indexOf(cookieName) === 0) {
-            return cookie.substring(cookieName.length, cookie.length);
-        }
-    }
-    return '';
-}

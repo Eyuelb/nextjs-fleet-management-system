@@ -1,0 +1,16 @@
+.header {
+  @apply flex items-center justify-between px-6 absolute top-0 right-0 left-0 ;
+  border-bottom: 1px solid var(--mantine-color-default-border);
+  min-height: 3.6rem;
+  background-color: var(--header-color-body);
+
+}
+.user {
+  padding: var(--mantine-spacing-xs) var(--mantine-spacing-sm);
+  border-radius: var(--mantine-radius-sm);
+  transition: background-color 100ms ease;
+
+  // &:hover {
+  //   background-color: light-dark(var(--mantine-color-white), var(--mantine-color-dark-8));
+  // }
+}

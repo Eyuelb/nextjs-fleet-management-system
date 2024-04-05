@@ -1,7 +1,78 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+:root {
 
+  --c-bg: #f1f2f6;
+  --border-color: var(--mantine-color-gray-4);
+
+  --tw-ring-offset-shadow: var(--tw-ring-inset) 0 0 0
+    var(--tw-ring-offset-width) var(--tw-ring-offset-color);
+  --tw-ring-shadow: var(--tw-ring-inset) 0 0 0
+    calc(1px + var(--tw-ring-offset-width)) var(--border-color);
+
+  --input-border-size: 0px;
+  --input-border-type: solid;
+  --input-border-color: var(--border-color);
+  --input-border: var(--input-border-size) var(--input-border-type)
+    var(--border-color);
+  --input-border-radius: 4px;
+  --input-margin-top: 0.625rem;
+  --input-ring-shadow: var(--tw-ring-offset-shadow), var(--tw-ring-shadow),
+    var(--tw-shadow, 0 0 #0000);
+
+  --input-label-color: var(--mantine-color-text);
+  --input-label-font-size: var(--mantine-font-size-md);
+  --input-label-font-wight: 600;
+  --input-label-line-height: 1.5;
+  --label-floating-position-input: none;
+  --shared-header-menu-color: #3c115f;
+}
+
+body {
+  background-color: var(--mantine-color-body);
+}
+
+:root[data-mantine-color-scheme="light"] {
+  --mantine-color-body: var(--c-bg);
+  --sidebar-color-body: #ffffff;
+  --header-color-body: #ffffff;
+  --card-color-body: white;
+  --card2-color-body: var(--mantine-color-gray-2);
+  --_tab-border-color: transparent;
+  --react-international-phone-border-radius: var(--input-border-radius);
+  --react-international-phone-border-color: var(--border-color);
+  --react-international-phone-background-color: var(--_input-bd);
+  --react-international-phone-text-color: var(--_input-color);
+  --react-international-phone-selected-dropdown-item-background-color: var(
+    --_input-bd
+  );
+  --react-international-phone-country-selector-background-color-hover: var(
+    --_input-bd
+  );
+}
+:root[data-mantine-color-scheme="dark"] {
+  --mantine-color-body: var(--mantine-color-dark-7);
+  --sidebar-color-body: var(--mantine-color-dark-8);
+  --header-color-body: var(--mantine-color-dark-6);
+  --card-color-body: var(--mantine-color-dark-6);
+  --card2-color-body: var(--mantine-color-dark-9);
+  --border-color: var(--mantine-color-gray-4);
+  --react-international-phone-border-radius: var(--input-border-radius);
+  --react-international-phone-border-color: transparent;
+  --react-international-phone-country-selector-border-color: transparent;
+  --react-international-phone-background-color: var(--card-color-body);
+  --react-international-phone-country-selector-background-color: var(
+    --card-color-body
+  );
+  --react-international-phone-text-color: var(--mantine-color-text);
+  --react-international-phone-selected-dropdown-item-background-color: var(
+    --_input-bd
+  );
+  --react-international-phone-country-selector-background-color-hover: var(
+    --_input-bd
+  );
+}
 .form-wrapper {
   display: flex;
   flex-wrap: wrap; /* Allow flex items to wrap to the next line */

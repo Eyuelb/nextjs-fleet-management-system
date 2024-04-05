@@ -1,5 +1,5 @@
+import { showNotification } from '@mantine/notifications';
 import { httpGet, httpPost } from '../axios/services';
-import showNotification from '../react-toastify';
 import { User, UserLoginRequestDto } from './model';
 import AuthUtility from './utils';
 
@@ -12,8 +12,11 @@ const login = async (data: UserLoginRequestDto) => {
     if (response.access_token) {
       AuthUtility.setUser(response);
     }
-  } catch (error) {
-    showNotification(error.message);
+  } catch (error ) {
+    const err = error as any
+    showNotification({
+      message:err.message
+    });
   }
 };
 

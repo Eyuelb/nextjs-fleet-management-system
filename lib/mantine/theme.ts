@@ -48,11 +48,11 @@ export const theme: Partial<MantineThemeOverride> = {
   fontFamily:"inherit",
   fontFamilyMonospace: "inherit",
   breakpoints: {
-    xs: "36rem",
-    sm: "48rem",
-    md: "62rem",
-    lg: "75rem",
-    xl: "87.5rem",
+    xs: '412px',
+    sm: '640px',
+    md: '768px',
+    lg: '1024px',
+    xl: '1280px',
   },
 
   colors: {

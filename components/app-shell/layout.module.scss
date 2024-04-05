@@ -1,0 +1,13 @@
+.root {
+  @apply w-full h-full min-h-screen overflow-hidden relative;
+}
+.sidebar {
+  --sidebar-width: 280px;
+  @apply hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex w-[var(--sidebar-width)] lg:flex-col border;
+}
+
+.main {
+  --sidebar-width: 280px;
+  @apply left-0 right-0 lg:left-[var(--sidebar-width)] fixed z-0 overflow-hidden focus:outline-none;
+}
+
