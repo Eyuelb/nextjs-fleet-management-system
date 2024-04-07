@@ -5,10 +5,19 @@ import tokenService from "./lib/token";
 // This function can be marked `async` if using `await` inside
 export async function middleware(request: NextRequest) {
   const token = await tokenService.getToken(request, "refresh");
+  if (!token) {
+    return NextResponse.redirect(new URL("/login", request.url));
+  }
   if (token && request.nextUrl.pathname !== "/login") {
     const refresh_token_isValid = await tokenService.isValid(token);
     if (!refresh_token_isValid) {
       return NextResponse.redirect(new URL("/login", request.url));
+    }
+  }
+  if (token && request.nextUrl.pathname === "/login") {
+    const refresh_token_isValid = await tokenService.isValid(token);
+    if (refresh_token_isValid) {
+      return NextResponse.redirect(new URL("/", request.url));
     }
   }
   const res = NextResponse.next();

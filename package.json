@@ -9,6 +9,7 @@
     "drizzle-push": "drizzle-kit push:pg"
   },
   "dependencies": {
+    "@hookform/resolvers": "^3.3.2",
     "@mantine/carousel": "^7.7.1",
     "@mantine/core": "^7.7.1",
     "@mantine/dates": "^7.7.1",
@@ -17,6 +18,7 @@
     "@mantine/notifications": "^7.7.1",
     "@tabler/icons-react": "^3.1.0",
     "@tanstack/react-query": "^5.28.9",
+    "@tanstack/react-table": "^8.15.3",
     "@types/node": "^20.10.5",
     "@types/react": "^18.2.45",
     "@types/react-dom": "^18.2.18",
@@ -26,6 +28,7 @@
     "dayjs": "^1.11.10",
     "drizzle-kit": "^0.20.14",
     "drizzle-orm": "^0.29.2",
+    "drizzle-zod": "^0.5.1",
     "jose": "^5.2.3",
     "next": "^14.1.4",
     "next-connect": "1.0.0-next.4",
@@ -41,11 +44,10 @@
     "eslint": "8.56.0",
     "eslint-config-next": "^14.0.4",
     "postcss": "^8.4.32",
-    "tailwindcss": "^3.4.0",
-    "typescript": "^5.3.3",
     "postcss-preset-mantine": "^1.7.0",
     "postcss-simple-vars": "^7.0.1",
-    "sass": "^1.69.4"
-
+    "sass": "^1.69.4",
+    "tailwindcss": "^3.4.0",
+    "typescript": "^5.3.3"
   }
 }

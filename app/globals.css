@@ -1,6 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
 :root {
 
   --c-bg: #f1f2f6;
@@ -27,6 +28,18 @@
   --input-label-line-height: 1.5;
   --label-floating-position-input: none;
   --shared-header-menu-color: #3c115f;
+}
+*,
+::before,
+::after {
+  box-sizing: border-box; /* 1 */
+  border: 0 solid var(--border-color);
+}
+
+::before,
+::after {
+  --tw-content: '';
+
 }
 
 body {

@@ -1,0 +1,48 @@
+.wrapper {
+  @apply flex w-full h-full flex-col;
+  border-radius: var(--mantine-radius-md);
+  background: var(--sidebar-color-body);
+
+}
+.toolbar {
+  @apply w-full h-full flex justify-between items-center;
+  border-bottom: 0px;
+  border-top-left-radius: var(--mantine-radius-md);
+  border-top-right-radius: var(--mantine-radius-md);
+  padding: var(--mantine-spacing-sm);
+}
+.toolbarRightSection {
+  @apply flex items-center;
+
+  button {
+    color: var(--text-color);
+  }
+}
+.root {
+  background: var(--sidebar-color-body);
+}
+
+.table {
+  background-color: var(--sidebar-color-body);
+
+  th,
+  td {
+    background-color: var(--sidebar-color-body);
+  }
+  td {
+    &:not(:last-child) {
+      overflow: hidden;
+    } // Your styles for the last <tr> element here
+  }
+}
+
+.header {
+  th {
+  }
+}
+
+.footer {
+  th {
+    border-top: 1px solid var(--mantine-color-default-border);
+  }
+}

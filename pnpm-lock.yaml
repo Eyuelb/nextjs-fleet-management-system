@@ -5,6 +5,9 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@hookform/resolvers':
+    specifier: ^3.3.2
+    version: 3.3.4(react-hook-form@7.51.2)
   '@mantine/carousel':
     specifier: ^7.7.1
     version: 7.7.1(@mantine/core@7.7.1)(@mantine/hooks@7.7.1)(embla-carousel-react@8.0.1)(react-dom@18.2.0)(react@18.2.0)
@@ -29,6 +32,9 @@ dependencies:
   '@tanstack/react-query':
     specifier: ^5.28.9
     version: 5.28.9(react@18.2.0)
+  '@tanstack/react-table':
+    specifier: ^8.15.3
+    version: 8.15.3(react-dom@18.2.0)(react@18.2.0)
   '@types/node':
     specifier: ^20.10.5
     version: 20.10.5
@@ -56,6 +62,9 @@ dependencies:
   drizzle-orm:
     specifier: ^0.29.2
     version: 0.29.2(@types/pg@8.11.4)(@types/react@18.2.45)(expo-sqlite@13.2.0)(pg@8.11.3)(react@18.2.0)
+  drizzle-zod:
+    specifier: ^0.5.1
+    version: 0.5.1(drizzle-orm@0.29.2)(zod@3.22.4)
   jose:
     specifier: ^5.2.3
     version: 5.2.3
@@ -2421,6 +2430,14 @@ packages:
       graphql: 15.8.0
     dev: false
 
+  /@hookform/resolvers@3.3.4(react-hook-form@7.51.2):
+    resolution: {integrity: sha512-o5cgpGOuJYrd+iMKvkttOclgwRW86EsWJZZRC23prf0uU2i48Htq4PuT73AVb9ionFyZrwYEITuOFGF+BydEtQ==}
+    peerDependencies:
+      react-hook-form: ^7.0.0
+    dependencies:
+      react-hook-form: 7.51.2(react@18.2.0)
+    dev: false
+
   /@humanwhocodes/config-array@0.11.13:
     resolution: {integrity: sha512-JSBDMiDKSzQVngfRjOdFXgFfklaXI4K9nLF49Auh21lmBWRLIK3+xTErTWD4KU54pb6coM6ESE7Awz/FNU3zgQ==}
     engines: {node: '>=10.10.0'}
@@ -2763,6 +2780,23 @@ packages:
     dependencies:
       '@tanstack/query-core': 5.28.9
       react: 18.2.0
+    dev: false
+
+  /@tanstack/react-table@8.15.3(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-aocQ4WpWiAh7R+yxNp+DGQYXeVACh5lv2kk96DjYgFiHDCB0cOFoYMT/pM6eDOzeMXR9AvPoLeumTgq8/0qX+w==}
+    engines: {node: '>=12'}
+    peerDependencies:
+      react: '>=16.8'
+      react-dom: '>=16.8'
+    dependencies:
+      '@tanstack/table-core': 8.15.3
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
+
+  /@tanstack/table-core@8.15.3:
+    resolution: {integrity: sha512-wOgV0HfEvuMOv8RlqdR9MdNNqq0uyvQtP39QOvGlggHvIObOE4exS+D5LGO8LZ3LUXxId2IlUKcHDHaGujWhUg==}
+    engines: {node: '>=12'}
     dev: false
 
   /@tsconfig/node16@1.0.4:
@@ -4014,6 +4048,16 @@ packages:
       expo-sqlite: 13.2.0(expo@49.0.21)
       pg: 8.11.3
       react: 18.2.0
+    dev: false
+
+  /drizzle-zod@0.5.1(drizzle-orm@0.29.2)(zod@3.22.4):
+    resolution: {integrity: sha512-C/8bvzUH/zSnVfwdSibOgFjLhtDtbKYmkbPbUCq46QZyZCH6kODIMSOgZ8R7rVjoI+tCj3k06MRJMDqsIeoS4A==}
+    peerDependencies:
+      drizzle-orm: '>=0.23.13'
+      zod: '*'
+    dependencies:
+      drizzle-orm: 0.29.2(@types/pg@8.11.4)(@types/react@18.2.45)(expo-sqlite@13.2.0)(pg@8.11.3)(react@18.2.0)
+      zod: 3.22.4
     dev: false
 
   /eastasianwidth@0.2.0:

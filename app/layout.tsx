@@ -1,8 +1,8 @@
 import ReactQueryProvider from "@/lib/react-query/provider";
-import "./globals.css";
-
-import { Noto_Sans_SC } from "next/font/google";
 import MantineProvider from "@/lib/mantine/provider";
+import "./globals.css";
+import { Noto_Sans_SC } from "next/font/google";
+
 
 let title = "Next.js + Postgres Auth Starter";
 let description =

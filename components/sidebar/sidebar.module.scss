@@ -1,6 +1,6 @@
 .sidebarMain {
-  @apply flex grow flex-col overflow-y-auto ;
-  background-color: var(--mantine-color-body);
+  @apply flex grow flex-col overflow-y-auto border-l ;
+  background-color: var(--card-color-body);
 
 }
 .groupTitle {

@@ -11,7 +11,6 @@ import "@mantine/core/styles.css";
 import "@mantine/notifications/styles.css";
 import "@mantine/dates/styles.css";
 import "@mantine/carousel/styles.css";
-
 import { ModalsProvider } from "@mantine/modals";
 
 export default function MantineProvider({
@@ -22,8 +21,8 @@ export default function MantineProvider({
   const theme: Partial<MantineThemeOverride> = baseTheme;
 
   return (
-    <Provider theme={theme}>
-      <ColorSchemeScript />
+    <Provider theme={theme} >
+      <ColorSchemeScript  />
       <Notifications />
       <ModalsProvider>{children}</ModalsProvider>
     </Provider>

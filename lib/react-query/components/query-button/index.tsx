@@ -1,8 +1,10 @@
 import { useMutation } from "@tanstack/react-query";
 import React from "react";
 import { httpDelete, httpPost, httpPut } from "../../../axios/services";
+import getQueryClient from "../../queryClient";
+import { LoadingOverlay } from "@mantine/core";
 
-type QueryType = "post" | "put" | "delete";
+type QueryType = "Get" | "Post" | "Put" | "Delete";
 
 type AsProp<C extends React.ElementType> = {
   as?: C;
@@ -37,6 +39,7 @@ type ComponentProps<C extends React.ElementType> =
       queryType: QueryType;
       url: string;
       body?: any;
+      queryKey?: string;
     }
   >;
 
@@ -49,29 +52,35 @@ type ComponentType = <C extends React.ElementType = "button">(
 
 const QueryButton: ComponentType = React.forwardRef(
   <C extends React.ElementType = "button">(
-    { as, children, queryType, url, body, ...props }: ComponentProps<C>,
+    {
+      as,
+      children,
+      queryType,
+      queryKey,
+      url,
+      body,
+      ...props
+    }: ComponentProps<C>,
     ref?: PolymorphicRef<C>
   ) => {
     const { mutate, isPending } = useMutation({
       mutationFn: (data: any) => {
         // Choose the appropriate HTTP method function based on the queryType
         switch (queryType) {
-          case "post":
+          case "Post":
             return httpPost(url, data); // Replace '' with the appropriate endpoint
-          case "put":
+          case "Put":
             return httpPut(url, data); // Replace '' with the appropriate endpoint
-          case "delete":
+          case "Delete":
             return httpDelete(url); // Replace '' with the appropriate endpoint
           default:
             throw new Error(`Invalid queryType: ${queryType}`);
         }
       },
-      onSuccess: () =>
-        alert({
-          withBorder: true,
-          type: "success",
-          message: "Data Update Successfully",
-        }),
+      onSuccess: () => {
+        const queryClient = getQueryClient;
+        queryKey && queryClient.invalidateQueries(queryKey as any);
+      },
       onError: (error: any) =>
         alert({
           withBorder: true,
@@ -83,7 +92,10 @@ const QueryButton: ComponentType = React.forwardRef(
 
     return (
       <Component {...props} onClick={() => mutate(body)} ref={ref}>
-        {children}
+        <React.Fragment>
+          <LoadingOverlay visible={isPending} />
+          {children}
+        </React.Fragment>
       </Component>
     );
   }

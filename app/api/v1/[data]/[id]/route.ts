@@ -5,6 +5,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { logRequest } from "utils/api/log";
 import * as schema from "db/schema";
 import { AppConfig } from "utils/app-config";
+import { ErrorResponse } from "utils/api/response";
 
 interface RequestContext {
   params: {
@@ -84,7 +85,10 @@ router.get(async (req) => {
     .select()
     .from(schema[tableName])
     .where(eq(schema[tableName].id, uuid));
-  return NextResponse.json(data);
+  if(data.length > 0){
+    return NextResponse.json(data[0]);
+  }
+  return ErrorResponse(404,"Not Found")
 });
 
 // Define PUT handler
