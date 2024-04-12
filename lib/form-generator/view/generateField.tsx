@@ -14,6 +14,7 @@ import dayjs from "dayjs";
 import React from "react";
 import { FieldValues } from "react-hook-form";
 import { FieldConfig } from "../model";
+import StaticSelect from "@/lib/crud-framework/components/static-select";
 
 // Define a function to generate a single field component based on the configuration
 export const generateField = <T extends FieldValues>(
@@ -30,6 +31,9 @@ export const generateField = <T extends FieldValues>(
     ref,
     fieldPros,
     disabled = false,
+    dataSource,
+    labelKey,
+    valueKey,
     ...props
   } = config;
 
@@ -115,7 +119,7 @@ export const generateField = <T extends FieldValues>(
       );
     case "select":
       return (
-        <Select
+        <StaticSelect
           key={key}
           label={label}
           data={options}
@@ -125,6 +129,9 @@ export const generateField = <T extends FieldValues>(
           }}
           value={props.value}
           disabled={disabled}
+          dataSource={dataSource}
+          labelKey={labelKey}
+          valueKey={valueKey}
         />
       );
     case "checkbox":
@@ -180,6 +187,7 @@ export const generateField = <T extends FieldValues>(
           }}
         />
       );
+    
     default:
       return null;
   }

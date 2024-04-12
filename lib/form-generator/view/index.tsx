@@ -1,29 +1,30 @@
-import React from 'react';
-import { generateField } from './generateField'; // Assuming generateField is in a separate file
-import { useZodValidationFromFieldConfig } from '../schema/getZodValidation';
-import { FormGeneratorProps } from '../model';
-import useExtendedForm from '@/lib/react-form';
-import { Button, LoadingOverlay, Text } from '@mantine/core';
+import React from "react";
+import { generateField } from "./generateField"; // Assuming generateField is in a separate file
+import { useZodValidationFromFieldConfig } from "../schema/getZodValidation";
+import { FormGeneratorProps } from "../model";
+import useExtendedForm from "@/lib/react-form";
+import { Button, LoadingOverlay, Text } from "@mantine/core";
 
 const FormGenerator: React.FC<FormGeneratorProps<any>> = ({
   configs,
   defaultValues, // Accept defaultValues prop
   onSubmit,
   isLoading,
-  submitBtnLabel = 'Submit',
+  submitBtnLabel = "Submit",
   clearButtonLabel,
   className,
   fWrapperClassName,
   readonly,
+  customFields,
 }) => {
   const schema = useZodValidationFromFieldConfig(configs.fieldsConfig);
-  const { Form, getInputProps, reset, watch } = useExtendedForm({
+  const { Form, getInputProps, reset, watch, formState} = useExtendedForm({
     defaultValues,
     validationSchema: configs.schema ?? schema,
     onSubmit,
   });
 
-  //console.log(watch());
+  console.log(formState);
 
   return (
     <div
@@ -34,11 +35,20 @@ const FormGenerator: React.FC<FormGeneratorProps<any>> = ({
         {configs.title}
       </Text>
       <Form className={`form-wrapper ${fWrapperClassName}`}>
-        {configs.fieldsConfig.map(config => (
+        {configs.fieldsConfig.map((config) => (
           <div key={config.id} className="form-field">
             {generateField({
               ...config,
-              ...getInputProps(config.id, 'select'),
+              ...getInputProps(config.id, "select"),
+              ...(readonly?.includes(config.id) ? { disabled: true } : {}),
+            })}
+          </div>
+        ))}
+        {customFields?.map((config) => (
+          <div key={config.id} className="form-field">
+            {generateField({
+              ...config,
+              ...getInputProps(config.id, "select"),
               ...(readonly?.includes(config.id) ? { disabled: true } : {}),
             })}
           </div>

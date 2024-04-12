@@ -53,10 +53,11 @@ const Page = memo(({ params }: Props) => (
     }}
     form={{
       configs:{
-        fieldsConfig: getFormTypeInfoModel(Object.values(model)),
+        fieldsConfig: getFormTypeInfoModel(model),
         schema:createInsertSchema(SchemaModel)
       },
       defaultValues:{...resetObjectValues(model)}
+      
     }}
   />
 ));

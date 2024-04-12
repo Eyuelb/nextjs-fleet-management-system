@@ -12,15 +12,13 @@ import { createInsertSchema } from "drizzle-zod";
 import { resetObjectValues } from "../../../../utils/object";
 
 type Props = { params: { slug: string[] } };
-const feat = "vehicles";
+const feat = "maintenance";
 const SchemaModel = schema[feat];
 type InsertModel = typeof SchemaModel.$inferInsert;
 const model = SchemaModel;
 //  console.log(getForeignKeyTableNames(model))
 // console.log(getFormTypeInfoModel(Object.values(model)))
-// console.log(insertUserSchema)
 console.log(model)
-
 const Page = memo(({ params }: Props) => (
   <RenderPage<InsertModel>
     feat={feat}

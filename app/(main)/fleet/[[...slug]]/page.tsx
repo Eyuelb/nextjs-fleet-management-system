@@ -12,15 +12,13 @@ import { createInsertSchema } from "drizzle-zod";
 import { resetObjectValues } from "../../../../utils/object";
 
 type Props = { params: { slug: string[] } };
-const feat = "vehicles";
+const feat = "fleet";
 const SchemaModel = schema[feat];
 type InsertModel = typeof SchemaModel.$inferInsert;
 const model = SchemaModel;
 //  console.log(getForeignKeyTableNames(model))
 // console.log(getFormTypeInfoModel(Object.values(model)))
-// console.log(insertUserSchema)
-console.log(model)
-
+console.log(model);
 const Page = memo(({ params }: Props) => (
   <RenderPage<InsertModel>
     feat={feat}
@@ -65,6 +63,44 @@ const Page = memo(({ params }: Props) => (
         schema: createInsertSchema(SchemaModel),
       },
       defaultValues: { ...resetObjectValues(model) },
+      customFields: [
+        {
+          id: "driverId",
+          label: "Driver",
+          type: "select",
+          dataSource: {
+            url: () => `/v1/users`,
+            method: "Get",
+            queryKey: ["users"],
+          },
+          valueKey: "id",
+          labelKey: "name",
+        },
+        {
+          id: "routeId",
+          label: "Route",
+          type: "select",
+          dataSource: {
+            url: () => `/v1/routes`,
+            method: "Get",
+            queryKey: ["routes"],
+          },
+          valueKey: "id",
+          labelKey: "name",
+        },
+        {
+          id: "routeId",
+          label: "Vehicle",
+          type: "select",
+          dataSource: {
+            url: () => `/v1/vehicles`,
+            method: "Get",
+            queryKey: ["vehicles"],
+          },
+          valueKey: "id",
+          labelKey: "name",
+        },
+      ],
     }}
   />
 ));

@@ -5,6 +5,7 @@ import { connectToDatabase } from "db/pool";
 import { users } from "db/schema";
 import { createEdgeRouter } from "next-connect";
 import { NextRequest, NextResponse } from "next/server";
+import { commonInjection } from "utils/api/common";
 import { logRequest } from "utils/api/log";
 
 interface RequestContext {
@@ -38,6 +39,7 @@ router.post(async (req) => {
   const newUser = {
     ...body,
     password,
+    ...commonInjection.post
   };
   try {
     const db = await connectToDatabase();

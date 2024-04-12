@@ -1,27 +1,27 @@
-import { ChangeHandler, FieldValues, Path, RefCallBack, SubmitHandler } from 'react-hook-form';
-import { Schema, ZodType } from 'zod';
-import { DefaultValuesType } from '../react-form/type';
+import {
+  ChangeHandler,
+  FieldValues,
+  Path,
+  RefCallBack,
+  SubmitHandler,
+} from "react-hook-form";
+import { Schema, ZodType } from "zod";
+import { DefaultValuesType } from "../react-form/type";
+import { ActionQuery } from "../crud-framework/model";
 
 // Define a union type for all supported field types
 type FieldType =
-  | 'text'
-  | 'number'
-  | 'email'
-  | 'password'
-  | 'textarea'
-  | 'select'
-  | 'checkbox'
-  | 'radio'
-  | 'date'
-  | 'role-select'
-  | 'route-select'
-  | 'vehicle-type-select'
-  | 'address-select'
-  | 'service-type-select'
-  | 'date-picker-et'
-  | 'role-resources-select'
-  | 'role-select-multiple'
-  | 'plate-no-select';
+  | "text"
+  | "number"
+  | "email"
+  | "password"
+  | "textarea"
+  | "select"
+  | "checkbox"
+  | "radio"
+  | "date"
+  | "static-select"
+
 
 // Define an interface for a field option
 interface FieldOption {
@@ -54,17 +54,21 @@ export interface FieldConfig<TFormValues extends FieldValues> {
   fieldPros?: {
     [key: string]: any;
   };
+  dataSource?: ActionQuery<TFormValues>;
+  labelKey?: string;
+  valueKey?: string;
 }
 export interface FormGeneratorProps<TFormValues extends FieldValues> {
   configs: FormConfig<TFormValues>;
   defaultValues: DefaultValuesType<TFormValues>; // Infer the type of defaultValues from the passed data
-  onSubmit: SubmitHandler<TFormValues> ;
+  onSubmit: SubmitHandler<TFormValues>;
   isLoading?: boolean;
   submitBtnLabel?: string;
   className?: string;
   clearButtonLabel?: string;
   readonly?: string[];
   fWrapperClassName?: string;
+  customFields?:FieldConfig<TFormValues>[]
 }
 
 // Define a type for the form configuration
@@ -73,5 +77,4 @@ export type FormConfig<TFormValues extends FieldValues> = {
   grid?: string;
   fieldsConfig: FieldConfig<TFormValues>[];
   schema?: Schema<TFormValues>;
-
 };

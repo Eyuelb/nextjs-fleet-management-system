@@ -6,28 +6,42 @@ import {
   date,
   integer,
   numeric,
+  pgEnum,
 } from "drizzle-orm/pg-core";
+const common = {
+  id: uuid("id").primaryKey().defaultRandom(),
+  createdAt: timestamp("createdAt", {
+    precision: 6,
+    withTimezone: true,
+  }).defaultNow(),
+};
+export const statusEnum = pgEnum("status", [
+  "Requested",
+  "Approved",
+  "Rejected",
+]);
 
 export const users = pgTable("users", {
-  id: uuid("userID").primaryKey().defaultRandom(),
+  ...common,
   name: text("name").notNull(),
   email: text("email").notNull().unique(),
-  emailVerified: timestamp("emailVerified", { mode: "date" }),
   refresh_token: text("refresh_token"),
   access_token: text("access_token"),
   password: text("password"),
   image: text("image"),
-  roleID: uuid("roleID")
+  roleId: uuid("roleId")
     .notNull()
     .references(() => roles.id),
 });
 export const roles = pgTable("roles", {
-  id: uuid("roleID").primaryKey().defaultRandom(),
-  roleName: text("roleName").notNull(),
+  ...common,
+  name: text("name").notNull(),
+  description: text("description"),
 });
 
 export const vehicles = pgTable("vehicles", {
-  id: uuid("vehicleID").primaryKey().defaultRandom(),
+  ...common,
+  name: text("name").notNull(),
   type: text("type"),
   make: text("make"),
   model: text("model"),
@@ -36,27 +50,34 @@ export const vehicles = pgTable("vehicles", {
   status: text("status"),
 });
 
-export const routes = pgTable("routes", {
-  id: uuid("routeID").primaryKey().defaultRandom(),
-  startLocation: text("startLocation"),
-  endLocation: text("endLocation"),
-  distance: numeric("distance"),
-});
+export const routes = pgTable(
+  "routes",
+  {
+    ...common,
+    startLocation: text("startLocation"),
+    endLocation: text("endLocation"),
+    distance: numeric("distance"),
+  },
+  (routes) => ({
+    name: text("name").default(
+      `${routes.startLocation} - ${routes.endLocation}`
+    ),
+  })
+);
 
 export const maintenance = pgTable("maintenance", {
-  id: uuid("requestID").primaryKey().defaultRandom(),
-  vehicleID: uuid("vehicleID").references(() => vehicles.id),
-  requestedByUserID: uuid("requestedByUserID").references(() => users.id),
+  ...common,
+  vehicleId: uuid("vehicleId").references(() => vehicles.id),
+  requestedByUserId: uuid("requestedByUserId").references(() => users.id),
   description: text("description"),
-  status: text("status"),
-  requestedDate: date("requestedDate"),
-  completedDate: date("completedDate"),
+  status: statusEnum("status"),
 });
 
 export const fleet = pgTable("fleet", {
-  id: uuid("fleetID").primaryKey().defaultRandom(),
-  vehicleID: uuid("vehicleID").references(() => vehicles.id),
-  userID: uuid("userID").references(() => users.id),
-  routeID: uuid("routeID").references(() => routes.id),
-  approval: text("approval"),
+  ...common,
+  vehicleId: uuid("vehicleId").references(() => vehicles.id),
+  driverId: uuid("driverId").references(() => users.id),
+  routeId: uuid("routeId").references(() => routes.id),
+  approvedBy: uuid("approvedBy").references(() => users.id),
+  status: statusEnum("status"),
 });

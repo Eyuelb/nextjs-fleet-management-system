@@ -18,10 +18,10 @@ function formatHeaderText(header: string): string {
 }
 
 export function transformModelToColumns<T extends Record<string, any>>(
-  obj: T,
+  model: T,
   exclude: string[] = []
 ): { accessorKey: string; header: string }[] {
-  return Object.entries(obj)
+  return Object.entries(model)
     .filter(([key]) => !exclude.includes(key)) // Filter out keys present in the exclude array
     .map(([key, value]) => ({
       accessorKey: key,
@@ -32,6 +32,7 @@ export function transformModelToColumns<T extends Record<string, any>>(
 interface ColumnTypeConfig {
   name: string;
   dataType: string;
+  columnType: string;
   // Add other properties as needed
 }
 
@@ -41,11 +42,28 @@ interface ReturnType {
   type: any;
 }
 
-export function getFormTypeInfoModel(
-  columnTypeConfig: ColumnTypeConfig[]
+export function getFormTypeInfoModel<T extends Record<string, any>>(
+  model: T,
+  exclude: string[] = []
 ): ReturnType[] {
-  return columnTypeConfig.map((config) => {
-    const { name, dataType } = config;
+  exclude.push("id");
+  exclude.push("createdAt");
+  exclude.push("updatedAt");
+  
+  const columnTypeConfig = Object.values(model);
+  const ownColumns = columnTypeConfig
+    .filter((data) => !exclude.includes(data.name))
+    .filter((column) => column.columnType !== "PgUUID");
+
+  const foreignColumns = columnTypeConfig
+    .filter((data) => !exclude.includes(data.name))
+    .filter((column) => column.columnType === "PgUUID");
+  console.log(ownColumns, foreignColumns);
+
+
+  console.log(getForeignKeyTableNames(model))
+  const formType = ownColumns.map((config) => {
+    const { name, dataType, columnType } = config;
 
     // Derive id from name (assuming it's the same)
     const id = name;
@@ -67,6 +85,9 @@ export function getFormTypeInfoModel(
       default:
         type = "text";
     }
+    if (columnType === "PgUUID") {
+      // 
+    }
 
     return {
       id,
@@ -74,4 +95,45 @@ export function getFormTypeInfoModel(
       type,
     };
   });
+  return formType;
+}
+
+export function getForeignKeyTableNames(table: any): string[] {
+  const tableSymbols = Object.getOwnPropertySymbols(table);
+  const pgInlineForeignKeysSymbol = tableSymbols.find(
+    (sym) => sym.toString() === "Symbol(drizzle:PgInlineForeignKeys)"
+  );
+  if (!pgInlineForeignKeysSymbol) {
+    console.error("PgInlineForeignKeys symbol not found");
+    return [];
+  }
+
+  const foreignKeyReferences = table[pgInlineForeignKeysSymbol].map(
+    (foreignKey: any) => foreignKey.reference()
+  );
+  const tableNames: string[] = [];
+
+  for (const foreignKeyReference of foreignKeyReferences) {
+    if (!foreignKeyReference) {
+      console.error("Foreign key reference not found");
+      continue;
+    }
+
+    const foreignTableSymbols = Object.getOwnPropertySymbols(
+      foreignKeyReference.foreignTable
+    );
+    const foreignKeyTableNameSymbol = foreignTableSymbols.find(
+      (sym) => sym.toString() === "Symbol(drizzle:Name)"
+    );
+    if (!foreignKeyTableNameSymbol) {
+      console.error("Foreign key table name symbol not found");
+      continue;
+    }
+
+    const foreignKeyTableName =
+      foreignKeyReference.foreignTable[foreignKeyTableNameSymbol];
+    tableNames.push(foreignKeyTableName);
+  }
+
+  return tableNames;
 }

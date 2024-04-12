@@ -10,7 +10,6 @@ import { CreateButton } from "./components/action-button";
 import RenderForm, { RenderFormProps } from "./render-form";
 import { ActionQuery } from "./model";
 
-
 type Props<T extends Record<string, any>> = {
   feat: string;
   params: { slug: string[] };
@@ -45,6 +44,7 @@ const RenderPage = <T extends Record<string, any>>({
             operation="create"
             feat={feat}
             actions={queryBuilder}
+            customFields={form?.customFields}
           />
         );
       case "update":
@@ -55,6 +55,7 @@ const RenderPage = <T extends Record<string, any>>({
             feat={feat}
             actions={queryBuilder}
             id={id}
+            customFields={form?.customFields}
           />
         );
       case "view":
@@ -79,14 +80,21 @@ const RenderPage = <T extends Record<string, any>>({
   };
   return (
     <Container fluid className="min-h-screen" p={0}>
-      <Flex fz={16} fw={600} justify={'space-between'} className="p-2 items-center">
+      <Flex
+        fz={16}
+        fw={600}
+        justify={"space-between"}
+        className="p-2 items-center"
+      >
         {operation !== "list" ? (
-          <Flex className="flex items-center gap-2 justify-center">
+          <Flex gap={5} align={'center'} className="items-center gap-2 justify-center">
             <Link href={`/${feat}`}>
               <IconArrowLeft size={20} />
             </Link>
-            <Text fw={500}>{capitalizeTxt(operation)}</Text>
-            <Text fw={500}>{capitalizeTxt(feat)}</Text>
+            <Flex align={'center'}   gap={4}className="gap-4  items-center ">
+              <Text fw={500}>{capitalizeTxt(operation)}</Text>
+              <Text fw={500}>{capitalizeTxt(feat)}</Text>
+            </Flex>
           </Flex>
         ) : (
           <Text fw={500}>{capitalizeTxt(feat)}</Text>

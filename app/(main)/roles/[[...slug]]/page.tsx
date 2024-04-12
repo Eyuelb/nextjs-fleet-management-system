@@ -9,15 +9,14 @@ import {
 } from "@/lib/crud-framework/utils";
 import { createInsertSchema } from "drizzle-zod";
 import { resetObjectValues } from "../../../../utils/object";
+import { commonInjection, validateSchema } from "utils/api/common";
 
 type Props = { params: { slug: string[] } };
 const feat = "roles";
-const SchemaModel = schema[feat];
-type InsertModel = typeof SchemaModel.$inferInsert;
-const model = SchemaModel;
-// console.log(Object.values(model))
-// console.log(getFormTypeInfoModel(Object.values(model)))
-// console.log(insertUserSchema)
+const model = schema[feat];
+type InsertModel = typeof model.$inferInsert;
+console.log(commonInjection.put.updatedAt)
+
 const Page = memo(({ params }: Props) => (
   <RenderPage<InsertModel>
     feat={feat}
@@ -58,8 +57,8 @@ const Page = memo(({ params }: Props) => (
     }}
     form={{
       configs: {
-        fieldsConfig: getFormTypeInfoModel(Object.values(model)),
-        schema: createInsertSchema(SchemaModel),
+        fieldsConfig: getFormTypeInfoModel(model),
+        schema: createInsertSchema(model),
       },
       defaultValues: { ...resetObjectValues(model) },
     }}

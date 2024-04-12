@@ -1,6 +1,6 @@
 {
-  "id": "409ccb82-6418-479b-971e-fde617d8adf0",
-  "prevId": "49fb4781-c5af-4d15-8c36-ff990fe33785",
+  "id": "a25e3565-e5a9-4ab7-8dd0-c2ef7121cb92",
+  "prevId": "8cae907c-5d67-4f56-9495-9a5385593a94",
   "version": "5",
   "dialect": "pg",
   "tables": {
@@ -11,43 +11,56 @@
         "id": {
           "name": "id",
           "type": "uuid",
-          "primaryKey": false,
-          "notNull": false,
+          "primaryKey": true,
+          "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "approval": {
-          "name": "approval",
-          "type": "text",
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp (6) with time zone",
           "primaryKey": false,
-          "notNull": false
+          "notNull": false,
+          "default": "now()"
         },
-        "vehicleID": {
-          "name": "vehicleID",
+        "vehicleId": {
+          "name": "vehicleId",
           "type": "uuid",
           "primaryKey": false,
           "notNull": false
         },
-        "userID": {
-          "name": "userID",
+        "driverId": {
+          "name": "driverId",
           "type": "uuid",
           "primaryKey": false,
           "notNull": false
         },
-        "routeID": {
-          "name": "routeID",
+        "routeId": {
+          "name": "routeId",
           "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "approvedBy": {
+          "name": "approvedBy",
+          "type": "uuid",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "status": {
+          "name": "status",
+          "type": "status",
           "primaryKey": false,
           "notNull": false
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "fleet_vehicleID_vehicles_id_fk": {
-          "name": "fleet_vehicleID_vehicles_id_fk",
+        "fleet_vehicleId_vehicles_id_fk": {
+          "name": "fleet_vehicleId_vehicles_id_fk",
           "tableFrom": "fleet",
           "tableTo": "vehicles",
           "columnsFrom": [
-            "vehicleID"
+            "vehicleId"
           ],
           "columnsTo": [
             "id"
@@ -55,12 +68,12 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "fleet_userID_user_id_fk": {
-          "name": "fleet_userID_user_id_fk",
+        "fleet_driverId_users_id_fk": {
+          "name": "fleet_driverId_users_id_fk",
           "tableFrom": "fleet",
-          "tableTo": "user",
+          "tableTo": "users",
           "columnsFrom": [
-            "userID"
+            "driverId"
           ],
           "columnsTo": [
             "id"
@@ -68,12 +81,25 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "fleet_routeID_routes_id_fk": {
-          "name": "fleet_routeID_routes_id_fk",
+        "fleet_routeId_routes_id_fk": {
+          "name": "fleet_routeId_routes_id_fk",
           "tableFrom": "fleet",
           "tableTo": "routes",
           "columnsFrom": [
-            "routeID"
+            "routeId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "fleet_approvedBy_users_id_fk": {
+          "name": "fleet_approvedBy_users_id_fk",
+          "tableFrom": "fleet",
+          "tableTo": "users",
+          "columnsFrom": [
+            "approvedBy"
           ],
           "columnsTo": [
             "id"
@@ -92,18 +118,25 @@
         "id": {
           "name": "id",
           "type": "uuid",
-          "primaryKey": false,
-          "notNull": false,
+          "primaryKey": true,
+          "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "vehicleID": {
-          "name": "vehicleID",
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp (6) with time zone",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "vehicleId": {
+          "name": "vehicleId",
           "type": "uuid",
           "primaryKey": false,
           "notNull": false
         },
-        "requestedByUserID": {
-          "name": "requestedByUserID",
+        "requestedByUserId": {
+          "name": "requestedByUserId",
           "type": "uuid",
           "primaryKey": false,
           "notNull": false
@@ -116,31 +149,19 @@
         },
         "status": {
           "name": "status",
-          "type": "text",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "requestedDate": {
-          "name": "requestedDate",
-          "type": "date",
-          "primaryKey": false,
-          "notNull": false
-        },
-        "completedDate": {
-          "name": "completedDate",
-          "type": "date",
+          "type": "status",
           "primaryKey": false,
           "notNull": false
         }
       },
       "indexes": {},
       "foreignKeys": {
-        "maintenance_vehicleID_vehicles_id_fk": {
-          "name": "maintenance_vehicleID_vehicles_id_fk",
+        "maintenance_vehicleId_vehicles_id_fk": {
+          "name": "maintenance_vehicleId_vehicles_id_fk",
           "tableFrom": "maintenance",
           "tableTo": "vehicles",
           "columnsFrom": [
-            "vehicleID"
+            "vehicleId"
           ],
           "columnsTo": [
             "id"
@@ -148,12 +169,12 @@
           "onDelete": "no action",
           "onUpdate": "no action"
         },
-        "maintenance_requestedByUserID_user_id_fk": {
-          "name": "maintenance_requestedByUserID_user_id_fk",
+        "maintenance_requestedByUserId_users_id_fk": {
+          "name": "maintenance_requestedByUserId_users_id_fk",
           "tableFrom": "maintenance",
-          "tableTo": "user",
+          "tableTo": "users",
           "columnsFrom": [
-            "requestedByUserID"
+            "requestedByUserId"
           ],
           "columnsTo": [
             "id"
@@ -172,15 +193,28 @@
         "id": {
           "name": "id",
           "type": "uuid",
-          "primaryKey": false,
-          "notNull": false,
+          "primaryKey": true,
+          "notNull": true,
           "default": "gen_random_uuid()"
         },
-        "roleName": {
-          "name": "roleName",
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp (6) with time zone",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "name": {
+          "name": "name",
           "type": "text",
           "primaryKey": false,
           "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
         }
       },
       "indexes": {},
@@ -195,9 +229,16 @@
         "id": {
           "name": "id",
           "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp (6) with time zone",
           "primaryKey": false,
           "notNull": false,
-          "default": "gen_random_uuid()"
+          "default": "now()"
         },
         "startLocation": {
           "name": "startLocation",
@@ -223,16 +264,23 @@
       "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "user": {
-      "name": "user",
+    "users": {
+      "name": "users",
       "schema": "",
       "columns": {
         "id": {
           "name": "id",
           "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp (6) with time zone",
           "primaryKey": false,
           "notNull": false,
-          "default": "gen_random_uuid()"
+          "default": "now()"
         },
         "name": {
           "name": "name",
@@ -245,12 +293,6 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true
-        },
-        "emailVerified": {
-          "name": "emailVerified",
-          "type": "timestamp",
-          "primaryKey": false,
-          "notNull": false
         },
         "refresh_token": {
           "name": "refresh_token",
@@ -276,8 +318,8 @@
           "primaryKey": false,
           "notNull": false
         },
-        "roleID": {
-          "name": "roleID",
+        "roleId": {
+          "name": "roleId",
           "type": "uuid",
           "primaryKey": false,
           "notNull": true
@@ -285,12 +327,12 @@
       },
       "indexes": {},
       "foreignKeys": {
-        "user_roleID_roles_id_fk": {
-          "name": "user_roleID_roles_id_fk",
-          "tableFrom": "user",
+        "users_roleId_roles_id_fk": {
+          "name": "users_roleId_roles_id_fk",
+          "tableFrom": "users",
           "tableTo": "roles",
           "columnsFrom": [
-            "roleID"
+            "roleId"
           ],
           "columnsTo": [
             "id"
@@ -301,8 +343,8 @@
       },
       "compositePrimaryKeys": {},
       "uniqueConstraints": {
-        "user_email_unique": {
-          "name": "user_email_unique",
+        "users_email_unique": {
+          "name": "users_email_unique",
           "nullsNotDistinct": false,
           "columns": [
             "email"
@@ -317,9 +359,22 @@
         "id": {
           "name": "id",
           "type": "uuid",
+          "primaryKey": true,
+          "notNull": true,
+          "default": "gen_random_uuid()"
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp (6) with time zone",
           "primaryKey": false,
           "notNull": false,
-          "default": "gen_random_uuid()"
+          "default": "now()"
+        },
+        "name": {
+          "name": "name",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": true
         },
         "type": {
           "name": "type",
@@ -364,7 +419,16 @@
       "uniqueConstraints": {}
     }
   },
-  "enums": {},
+  "enums": {
+    "status": {
+      "name": "status",
+      "values": {
+        "Requested": "Requested",
+        "Approved": "Approved",
+        "Rejected": "Rejected"
+      }
+    }
+  },
   "schemas": {},
   "_meta": {
     "columns": {},

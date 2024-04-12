@@ -2,7 +2,8 @@ export function resetObjectValues(obj: any): any {
   let newObj: any = {};
   for (const key in obj) {
     if (Object.prototype.hasOwnProperty.call(obj, key)) {
-      if (key !== "id") {
+      if (key !== "id" && key !== "createdAt") {
+        console.log(key)
         // Exclude keys with the name 'id'
         switch (typeof obj[key].dataType) {
           case "string":
